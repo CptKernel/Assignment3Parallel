@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <cuda_runtime.h>
 #include <matrixScaleAndAddFunctions.h>
+#include <cudaMatrixScaleAndAddFunctions.h>
 
-#define MAX_MATRIX_SIZE 50000
+#define MAX_MATRIX_SIZE 50
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
 	}
 
 	printf("Arguments: %f %s %s %s\n", a, b, c, d);
+	printf("Test\n");
 
 	int rowsB;
 	int rowsC;
@@ -40,12 +42,14 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	scaleMatrix(a, arraySizeB, B);
-	addMatrices(arraySizeB, B, C, D);
-	outputMatrix(arraySizeB, D, d);
+	scaleAndAddKernel<<<1,1>>>(arraySizeB, a, B, C, D);
+	cudaDeviceSynchronize();
 
-	return 1;
+	for (int i = 0; i < arraySizeB; i++)
+	{
+		printf("%f ", D[i]);
+	}
+	printf("\n");
+
 }
-
-
 

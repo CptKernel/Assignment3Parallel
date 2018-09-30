@@ -1,0 +1,1 @@
+__global__ void scaleAndAddKernel(int size, float scale, float *B, float *C, float *D);
